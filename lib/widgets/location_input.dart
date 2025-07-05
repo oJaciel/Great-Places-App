@@ -5,7 +5,9 @@ import 'package:great_places/utils/location_util.dart';
 import 'package:location/location.dart';
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({super.key});
+  const LocationInput(this.onSelectPosition, {super.key});
+
+  final Function onSelectPosition;
 
   @override
   State<LocationInput> createState() => _LocationInputState();
@@ -33,8 +35,16 @@ class _LocationInputState extends State<LocationInput> {
 
     if (selectedPosition == null) return;
 
-    print(selectedPosition.latitude);
-    print(selectedPosition.longitude);
+    final staticMapImageUrl = LocationUtil.generateLocationPreviewImage(
+      latitude: selectedPosition.latitude!,
+      longitude: selectedPosition.longitude!,
+    );
+
+    setState(() {
+      _previewImageUrl = staticMapImageUrl;
+    });
+
+    widget.onSelectPosition(selectedPosition);
   }
 
   @override
