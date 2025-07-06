@@ -64,6 +64,9 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                     TextField(
                       controller: _titleController,
                       decoration: InputDecoration(labelText: 'Título'),
+                      onChanged: (text) {
+                        setState(() {});
+                      },
                     ),
                     SizedBox(height: 10),
                     ImageInput(_selectImage),
