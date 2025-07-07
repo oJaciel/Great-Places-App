@@ -15,6 +15,7 @@ class LocationInput extends StatefulWidget {
 
 class _LocationInputState extends State<LocationInput> {
   String? _previewImageUrl;
+  bool _isLoading = false;
 
   void _showPreview(double lat, double lng) {
     final staticMapImageUrl = LocationUtil.generateLocationPreviewImage(
@@ -28,6 +29,10 @@ class _LocationInputState extends State<LocationInput> {
   }
 
   Future<void> _getCurrentUserLocation() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final locData = await Location().getLocation();
 
@@ -36,17 +41,34 @@ class _LocationInputState extends State<LocationInput> {
       widget.onSelectPosition(LatLng(locData.latitude!, locData.longitude!));
     } catch (e) {
       return;
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   Future<void> _selectOnMap() async {
-    final LatLng selectedPosition = await Navigator.of(context).push(
-      MaterialPageRoute(builder: (ctx) => MapScreen(), fullscreenDialog: true),
-    );
+    setState(() {
+      _isLoading = true;
+    });
 
-    _showPreview(selectedPosition.latitude, selectedPosition.longitude);
+    try {
+      final LatLng selectedPosition = await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => MapScreen(),
+          fullscreenDialog: true,
+        ),
+      );
 
-    widget.onSelectPosition(selectedPosition);
+      _showPreview(selectedPosition.latitude, selectedPosition.longitude);
+
+      widget.onSelectPosition(selectedPosition);
+    } catch (e) {
+      return;
+    } finally {
+      _isLoading = false;
+    }
   }
 
   @override
@@ -61,7 +83,9 @@ class _LocationInputState extends State<LocationInput> {
             border: Border.all(width: 1, color: Colors.grey),
           ),
           child:
-              _previewImageUrl == null
+              _isLoading == true
+                  ? CircularProgressIndicator()
+                  : _previewImageUrl == null
                   ? Text('Localização  não informada')
                   : Image.network(
                     _previewImageUrl!,

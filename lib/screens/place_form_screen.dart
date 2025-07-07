@@ -57,22 +57,24 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _titleController,
-                      decoration: InputDecoration(labelText: 'Título'),
-                      onChanged: (text) {
-                        setState(() {});
-                      },
-                    ),
-                    SizedBox(height: 10),
-                    ImageInput(_selectImage),
-                    SizedBox(height: 10),
-                    LocationInput(_selectPosition),
-                  ],
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: _titleController,
+                        decoration: InputDecoration(labelText: 'Título'),
+                        onChanged: (text) {
+                          setState(() {});
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      ImageInput(_selectImage),
+                      SizedBox(height: 10),
+                      LocationInput(_selectPosition),
+                    ],
+                  ),
                 ),
               ),
             ),

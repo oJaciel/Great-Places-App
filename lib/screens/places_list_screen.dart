@@ -35,28 +35,37 @@ class PlacesListScreen extends StatelessWidget {
                                   : ListView.builder(
                                     itemCount: greatPlaces.itemsCount,
                                     itemBuilder:
-                                        (ctx, i) => ListTile(
-                                          leading: CircleAvatar(
-                                            backgroundImage: FileImage(
-                                              greatPlaces.itemByIndex(i).image,
+                                        (ctx, i) => Column(
+                                          children: [
+                                            ListTile(
+                                              leading: CircleAvatar(
+                                                backgroundImage: FileImage(
+                                                  greatPlaces
+                                                      .itemByIndex(i)
+                                                      .image,
+                                                ),
+                                              ),
+                                              title: Text(
+                                                greatPlaces
+                                                    .itemByIndex(i)
+                                                    .title,
+                                              ),
+                                              subtitle: Text(
+                                                greatPlaces
+                                                    .itemByIndex(i)
+                                                    .location
+                                                    .adress,
+                                              ),
+                                              onTap: () {
+                                                Navigator.of(context).pushNamed(
+                                                  AppRoutes.PLACE_DETAIL,
+                                                  arguments: greatPlaces
+                                                      .itemByIndex(i),
+                                                );
+                                              },
                                             ),
-                                          ),
-                                          title: Text(
-                                            greatPlaces.itemByIndex(i).title,
-                                          ),
-                                          subtitle: Text(
-                                            greatPlaces
-                                                .itemByIndex(i)
-                                                .location
-                                                .adress,
-                                          ),
-                                          onTap: () {
-                                            Navigator.of(context).pushNamed(
-                                              AppRoutes.PLACE_DETAIL,
-                                              arguments: greatPlaces
-                                                  .itemByIndex(i),
-                                            );
-                                          },
+                                            Divider(),
+                                          ],
                                         ),
                                   ),
                     ),
